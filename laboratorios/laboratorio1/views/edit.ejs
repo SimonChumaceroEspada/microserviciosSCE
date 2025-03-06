@@ -1,0 +1,8 @@
+<h2>Editar Contacto</h2>
+<form action="/update/<%= contact.id %>" method="post">
+    <input type="text" name="nombres" value="<%= contact.nombres %>" required>
+    <input type="text" name="apellidos" value="<%= contact.apellidos %>" required>
+    <input type="text" name="direccion" value="<%= contact.direccion %>" required>
+    <input type="number" name="telefono" value="<%= contact.telefono %>" required>
+    <button type="submit">Actualizar</button>
+</form>
