@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda</title>
+</head>
+<body>
+    <h1>Agenda</h1>
+    <form action="/add" method="POST">
+        <input type="text" name="nombres" placeholder="Nombres" required>
+        <input type="text" name="apellidos" placeholder="Apellidos" required>
+        <input type="text" name="direccion" placeholder="Dirección" required>
+        <input type="number" name="telefono" placeholder="Teléfono" required>
+        <button type="submit">Guardar</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% contacts.forEach(contact => { %>
+                <tr>
+                    <td><%= contact.nombres %></td>
+                    <td><%= contact.apellidos %></td>
+                    <td><%= contact.direccion %></td>
+                    <td><%= contact.telefono %></td>
+                    <td><a href="/edit/<%= contact.id %>">Editar</a></td>
+                    <td><a href="/delete/<%= contact.id %>">Eliminar</a></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

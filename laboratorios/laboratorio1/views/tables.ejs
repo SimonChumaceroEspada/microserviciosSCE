@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablas Matemáticas</title>
+</head>
+<body>
+    <h2>TABLA MATEMATICAA </h2>
+    <form action="/generate-table" method="post">
+        <select name="operation">
+            <option value="sum">Suma (+)</option>
+            <option value="sub">Resta (-)</option>
+            <option value="mul">Multiplicación (*)</option>
+            <option value="div">División (/)</option>
+        </select>
+        <input type="number" name="number" required placeholder="Número base">
+        <input type="number" name="start" required placeholder="Inicio">
+        <input type="number" name="end" required placeholder="Fin">
+        <button type="submit">Generar</button>
+    </form>
+
+    <% if (tableData) { %>
+        <h3>Resultado:</h3>
+        <table border="1">
+            <% tableData.forEach(row => { %>
+                <tr>
+                    <td><%= row.num %></td>
+                    <td><%= row.op === "sum" ? "+" : row.op === "sub" ? "-" : row.op === "mul" ? "*" : "/" %></td>
+                    <td><%= row.i %></td>
+                    <td>=</td>
+                    <td><%= row.result %></td>
+                </tr>
+            <% }); %>
+        </table>
+    <% } %>
+</body>
+</html>
