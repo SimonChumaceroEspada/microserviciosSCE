@@ -8,7 +8,6 @@ const swaggerSpec = require('./config/swagger');
 const productoRoutes = require('./routes/productoRoutes');
 const clienteRoutes = require('./routes/clienteRoutes');
 const facturaRoutes = require('./routes/facturaRoutes');
-const detalleFacturaRoutes = require('./routes/detalleFacturaRoutes');
 
 const app = express();
 require('dotenv').config();
@@ -16,12 +15,9 @@ require('dotenv').config();
 app.use(cors());
 app.use(express.json());
 
-
 app.use('/api/productos', productoRoutes);
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/facturas', facturaRoutes);
-app.use('/api/detalles', detalleFacturaRoutes);
-
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -30,9 +26,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'API Sistema de Ventas. Accede a /api-docs para ver la documentación.' });
 });
 
-
 const PORT = process.env.PORT || 3000;
-
 
 sequelize.sync({ alter: true })
   .then(() => {

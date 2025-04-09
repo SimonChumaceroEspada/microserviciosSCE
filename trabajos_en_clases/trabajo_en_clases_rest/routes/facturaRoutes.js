@@ -6,7 +6,7 @@ const facturaController = require('../controllers/FacturaController');
  * @swagger
  * /api/facturas:
  *   post:
- *     summary: Crear una nueva factura
+ *     summary: Crear una nueva factura con detalles
  *     tags: [Facturas]
  *     requestBody:
  *       required: true
@@ -22,6 +22,19 @@ const facturaController = require('../controllers/FacturaController');
  *               fecha:
  *                 type: string
  *                 format: date-time
+ *               detalles:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - producto_id
+ *                     - cantidad
+ *                   properties:
+ *                     producto_id:
+ *                       type: integer
+ *                     cantidad:
+ *                       type: integer
+ *                       minimum: 1
  *     responses:
  *       201:
  *         description: Factura creada exitosamente
@@ -57,26 +70,6 @@ router.get('/', facturaController.getAllFacturas);
 
 /**
  * @swagger
- * /api/facturas/{id}:
- *   get:
- *     summary: Obtener una factura por ID
- *     tags: [Facturas]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Datos de la factura
- *       404:
- *         description: Factura no encontrada
- */
-router.get('/:id', facturaController.getFacturaById);
-
-/**
- * @swagger
  * /api/facturas/cliente/{clienteId}:
  *   get:
  *     summary: Obtener facturas por cliente
@@ -106,6 +99,26 @@ router.get('/cliente/:clienteId', facturaController.getFacturasByCliente);
 /**
  * @swagger
  * /api/facturas/{id}:
+ *   get:
+ *     summary: Obtener una factura por ID
+ *     tags: [Facturas]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Datos de la factura
+ *       404:
+ *         description: Factura no encontrada
+ */
+router.get('/:id', facturaController.getFacturaById);
+
+/**
+ * @swagger
+ * /api/facturas/{id}:
  *   put:
  *     summary: Actualizar una factura
  *     tags: [Facturas]
@@ -126,6 +139,16 @@ router.get('/cliente/:clienteId', facturaController.getFacturasByCliente);
  *                 format: date-time
  *               cliente_id:
  *                 type: integer
+ *               detalles:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     producto_id:
+ *                       type: integer
+ *                     cantidad:
+ *                       type: integer
+ *                       minimum: 1
  *     responses:
  *       200:
  *         description: Factura actualizada

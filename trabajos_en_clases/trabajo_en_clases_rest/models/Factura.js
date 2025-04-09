@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Cliente = require('./Cliente');
+const Producto = require('./Producto');
 
 const Factura = sequelize.define('Factura', {
   id: {
@@ -15,6 +16,22 @@ const Factura = sequelize.define('Factura', {
   total: {
     type: DataTypes.DECIMAL(10, 2),
     defaultValue: 0
+  },
+  detalles: {
+    type: DataTypes.JSON,
+    defaultValue: [],
+    get() {
+      const rawValue = this.getDataValue('detalles');
+      if (!rawValue) return [];
+      return typeof rawValue === 'string' ? JSON.parse(rawValue) : rawValue;
+    },
+    set(value) {
+      this.setDataValue('detalles', 
+        value === null ? '[]' : 
+        typeof value === 'string' ? value : 
+        JSON.stringify(value)
+      );
+    }
   }
 }, {
   timestamps: true
