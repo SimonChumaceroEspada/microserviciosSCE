@@ -1,0 +1,86 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: bd_sistema_ventas
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cliente-service:
+    build: ./cliente-service
+    container_name: cliente-service
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=bd_sistema_ventas
+      - PORT=3001
+
+  producto-service:
+    build: ./producto-service
+    container_name: producto-service
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "3002:3002"
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=bd_sistema_ventas
+      - PORT=3002
+
+  factura-service:
+    build: ./factura-service
+    container_name: factura-service
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      cliente-service:
+        condition: service_started
+      producto-service:
+        condition: service_started
+    ports:
+      - "3003:3003"
+    networks:
+      - app-network
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=bd_sistema_ventas
+      - PORT=3003
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
